@@ -8,6 +8,7 @@ use App\Http\Controllers\{
 
 Route::get('/', function () {
     return view('Page.Login.login');
-});
+})->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, "login"]);
-Route::get('/dashboard', [HomeController::class, "index"]);
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('/dashboard', [HomeController::class, "index"])->name('dashboard')->middleware('auth');

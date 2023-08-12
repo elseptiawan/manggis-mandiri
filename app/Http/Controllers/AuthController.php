@@ -25,16 +25,18 @@ class AuthController extends Controller
             return back()->with('loginError', 'Wrong Email or Password')->withInput();
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        $request->session()->regenerate();
+ 
+        return redirect()->intended('dashboard');
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        return redirect('/dashboard');
+    }
 
-        // return response()->json([
-        //     'message' => 'Login success',
-        //     'access_token' => $token,
-        //     'token_type' => 'Bearer'
-        // ]);
-
-        return redirect()->intended('/dashboard');
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+    
+        return redirect('/');
     }
 }
