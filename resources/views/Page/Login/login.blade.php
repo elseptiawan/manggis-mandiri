@@ -36,6 +36,9 @@
 								<div class="m-sm-4">
 									<form action="/login" method="POST">
                                         {{ csrf_field() }}
+                                        @if(session()->has('loginError'))
+                                        <div class="error mb-3 bg-danger text-light p-2 rounded text-center">{{ session('loginError') }}</div>
+                                        @endif
 										<div class="mb-3">
 											<label class="form-label">Email</label>
 											<input class="form-control form-control-lg" type="email" name="email" placeholder="Masukkan Email Anda" value="{{old('email')}}" />

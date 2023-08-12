@@ -22,9 +22,7 @@ class AuthController extends Controller
         }
 
         if (! Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
+            return back()->with('loginError', 'Wrong Email or Password')->withInput();
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
@@ -37,9 +35,6 @@ class AuthController extends Controller
         //     'token_type' => 'Bearer'
         // ]);
 
-        return redirect('/dashboard')->with([
-            'access_token' => $token,
-            'user' => $user
-        ]);
+        return redirect()->intended('/dashboard');
     }
 }
