@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
             $table->integer('pelanggan_id');
-            $table->integer('barang_keluar_id');
             $table->string('nota');
             $table->date('tanggal');
             $table->time('jam');
+            $table->string('item');
+            $table->integer('total');
             $table->integer('setoran');
             $table->integer('piutang');
             $table->timestamps();
