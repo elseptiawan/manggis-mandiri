@@ -16,4 +16,9 @@ class Pelanggan extends Model
         'alamat',
         'no_hp'
     ];
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
