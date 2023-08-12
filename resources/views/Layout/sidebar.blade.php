@@ -5,13 +5,27 @@
         </a>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
-                Pages
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="/dashboard">
+                    <i class="bi bi-bag align-middle" style="font-size: 1.5rem;"></i> <span class="align-middle">Barang</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="/pelanggan">
+                    <i class="bi bi-person-fill align-middle" style="font-size: 1.5rem;"></i> <span class="align-middle">Pelanggan</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="/penjualan">
+                    <i class="bi bi-coin align-middle" style="font-size: 1.5rem;"></i> <span class="align-middle">Penjualan</span>
+                </a>
             </li>
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="index.html">
-                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                    <i class="bi bi-receipt align-middle" style="font-size: 1.5rem;"></i> <span class="align-middle">Piutang</span>
                 </a>
             </li>
 
