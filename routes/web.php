@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    HomeController,
-    AuthController
+    BarangController,
+    AuthController,
+    PelangganController,
+    PenjualanController
 };
 
 Route::get('/', function () {
@@ -11,4 +13,33 @@ Route::get('/', function () {
 })->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, "login"]);
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
-Route::get('/dashboard', [HomeController::class, "index"])->name('dashboard')->middleware('auth');
+Route::get('/dashboard', [BarangController::class, "index"])->name('dashboard')->middleware('auth');
+
+Route::group(['prefix' => '/barang','middleware' => ['auth']], function() {
+    Route::get('/read',[BarangController::class, "read"]);
+    Route::get('/create',[BarangController::class, "create"]);
+    Route::post('/store',[BarangController::class, "store"]);
+    Route::get('/edit/{id}',[BarangController::class, "edit"]);
+    Route::put('/update/{id}',[BarangController::class, "update"]);
+    Route::delete('/destroy/{id}',[BarangController::class, "destroy"]);
+});
+
+Route::group(['prefix' => '/pelanggan','middleware' => ['auth']], function() {
+    Route::get('/',[PelangganController::class, "index"]);
+    Route::get('/read',[PelangganController::class, "read"]);
+    Route::get('/create',[PelangganController::class, "create"]);
+    Route::post('/store',[PelangganController::class, "store"]);
+    Route::get('/edit/{id}',[PelangganController::class, "edit"]);
+    Route::put('/update/{id}',[PelangganController::class, "update"]);
+    Route::delete('/destroy/{id}',[PelangganController::class, "destroy"]);
+});
+
+Route::group(['prefix' => '/penjualan','middleware' => ['auth']], function() {
+    Route::get('/',[PenjualanController::class, "index"]);
+    Route::get('/read',[PenjualanController::class, "read"]);
+    Route::get('/create',[PenjualanController::class, "create"]);
+    Route::post('/store',[PenjualanController::class, "store"]);
+    Route::get('/edit/{id}',[PenjualanController::class, "edit"]);
+    Route::put('/update/{id}',[PenjualanController::class, "update"]);
+    Route::delete('/destroy/{id}',[PenjualanController::class, "destroy"]);
+});
