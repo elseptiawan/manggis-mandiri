@@ -12,11 +12,26 @@ class Penjualan extends Model
     protected $table = 'penjualan';
     protected $fillable = [
         'pelanggan_id',
-        'barang_keluar_id',
+        'barang_id',
         'nota',
         'tanggal',
         'jam',
         'setoran',
         'piutang'
     ];
+
+    /**
+     * Get the user that owns the Penjualan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'barang_id');
+    }
 }

@@ -12,7 +12,6 @@ class Piutang extends Model
     protected $table = 'piutang';
     protected $fillable = [
         'pelanggan_id',
-        'hutang',
-        'setoran'
+        'hutang'
     ];
 }
