@@ -1,7 +1,7 @@
 <nav class="sidebar js-sidebar" id="sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="index.html">
-            <span class="align-middle">TITLE</span>
+            <span class="align-middle">Manggis Mandiri</span>
         </a>
 
         <ul class="sidebar-nav">
