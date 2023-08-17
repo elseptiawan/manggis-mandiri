@@ -14,4 +14,9 @@ class Piutang extends Model
         'pelanggan_id',
         'hutang'
     ];
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id');
+    }
 }
