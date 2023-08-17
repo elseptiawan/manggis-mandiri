@@ -24,7 +24,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="index.html">
+                <a class="sidebar-link" href="/piutang">
                     <i class="bi bi-receipt align-middle" style="font-size: 1.5rem;"></i> <span class="align-middle">Piutang</span>
                 </a>
             </li>
