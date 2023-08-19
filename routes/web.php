@@ -52,7 +52,7 @@ Route::group(['prefix' => '/piutang','middleware' => ['auth']], function() {
     Route::get('/create',[PiutangController::class, "create"]);
     Route::post('/store',[PiutangController::class, "store"]);
     Route::get('/edit/{id}',[PiutangController::class, "edit"]);
-    Route::put('/update/{id}',[PiutangController::class, "update"]);
+    Route::post('/update/{id}',[PiutangController::class, "update"]);
     Route::delete('/destroy/{id}',[PiutangController::class, "destroy"]);
 });
 
