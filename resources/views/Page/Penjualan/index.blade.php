@@ -54,18 +54,25 @@
             var jumlah = $("#jumlah").val();
             var satuan = $("#satuan").val();
             var setoran = $("#setoran").val();
+            var nota = $("#nota")[0].files[0];
+
+            var fd = new FormData();
+
+            fd.append('_token',$("#csrf").val());
+            fd.append('pelanggan_id', pelanggan_id);
+            fd.append('nama_barang', nama_barang);
+            fd.append('harga_jual', harga_jual);
+            fd.append('jumlah', jumlah);
+            fd.append('satuan', satuan);
+            fd.append('setoran', setoran);
+            fd.append('nota', nota);
             $.ajax({
                 url: "{{ url('penjualan/store') }}",
                 type: "post",
-                data: {
-                    _token: $("#csrf").val(),
-                    pelanggan_id: pelanggan_id, 
-                    nama_barang: nama_barang,
-                    harga_jual: harga_jual,
-                    jumlah: jumlah,
-                    satuan: satuan,
-                    setoran: setoran,
-                },
+                data: fd,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
                 success: function(data) {
                     $(".btn-close").click();
                     read();

@@ -9,7 +9,7 @@
               <th scope="col">Jumlah</th>
               <th scope="col">Total</th>
               <th scope="col">Setoran</th>
-              <th scope="col">Piutang</th>
+              <th scope="col">Nota</th>
               {{-- <th scope="col"></th> --}}
             </tr>
           </thead>
@@ -28,7 +28,7 @@
                 <td>{{ $item->barang->jumlah }} {{ $item->barang->satuan }}</td>
                 <td>Rp. {{ $item->barang->jumlah * $item->barang->harga_jual }}</td>
                 <td>Rp. {{ $item->setoran }}</td>
-                <td>Rp. {{ ($item->barang->jumlah * $item->barang->harga_jual) - $item->setoran }}</td>
+                <td><a href={{ asset('storage/'.$item->nota) }} target="_blank"><i class="bi bi-receipt" role="button"></i></a></td>
                 {{-- <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();edit({{ $item->id }})"></i>
                     <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
                 </td> --}}

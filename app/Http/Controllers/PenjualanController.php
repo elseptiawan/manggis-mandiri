@@ -41,7 +41,8 @@ class PenjualanController extends Controller
             'harga_jual' => 'required|integer',
             'jumlah' => 'required|integer',
             'satuan' => 'required|string',
-            'setoran' => 'required|integer'
+            'setoran' => 'required|integer',
+            'nota' => 'required|file'
         ]);
  
         if ($validator->fails()) {
@@ -58,25 +59,29 @@ class PenjualanController extends Controller
             'status' => 'Barang Keluar'
            ]);
 
+           $fileName = Carbon::today()->toDateString().Str::random(6).'.'.$request->nota->getClientOriginalExtension();
+            $request->file('nota')->storeAs(
+                'public', $fileName
+            );
+
            $penjualan = Penjualan::create([
             'pelanggan_id' => $request->pelanggan_id,
             'barang_id' => $barang->id,
-            'nota' => Carbon::today()->toDateString().Str::random(6),
-            'tanggal' => Carbon::today(),
+            'nota' => $fileName,
+            'tanggal' => Carbon::today()->toDateString(),
             'jam' => Carbon::now()->toTimeString(),
             'setoran' => $request->setoran,
             'piutang' => ($request->harga_jual * $request->jumlah) - $request->setoran
            ]);
 
-            $piutang = Piutang::firstOrCreate([
-                'pelanggan_id' => $request->pelanggan_id,
-            ], [
-                'pelanggan_id' => $request->pelanggan_id,
-                'hutang' => 0
-            ]);
-
-            $piutang->hutang += $penjualan->piutang;
-            $piutang->save();
+           if ($penjualan->piutang > 0){
+                Piutang::create([
+                    'pelanggan_id' => $request->pelanggan_id,
+                    'setoran' => 0,
+                    'hutang' => $penjualan->piutang,
+                    'nota' => $penjualan->nota
+                ]);
+           }
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
