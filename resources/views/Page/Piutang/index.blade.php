@@ -8,8 +8,8 @@
         @endif
         <div class="d-flex justify-content-between mb-3">
             <h1 class="h3 mb-3">Piutang</h1>
-            {{-- <button class="btn btn-outline-primary" onClick="create()">
-                <i class="bi bi-file-earmark-plus"></i> Tambah Data</button> --}}
+            <button class="btn btn-outline-primary" onClick="create()">
+                <i class="bi bi-file-earmark-plus"></i> Tambah Data</button>
         </div>
         <div class="row" id="read"></div>
     </div>
@@ -41,37 +41,38 @@
         }
         function create() {
             $.get("{{ url('piutang/create') }}", {}, function(data, status) {
-                $("#exampleModalLabel").html('Bayar Hutang')
+                $("#exampleModalLabel").html('Tambah Data Piutang')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
             });
         }
         // untuk proses create data
         function store() {
-            var nama_barang = $("#nama_barang").val();
-            var harga_beli = $("#harga_beli").val();
-            var harga_jual = $("#harga_jual").val();
-            var jumlah = $("#jumlah").val();
-            var satuan = $("#satuan").val();
-            var status = $("#status").val();
-            console.log(nama_barang);
+            var pelanggan_id = $("#pelanggan_id").val();
+            var setoran = $("#setoran").val();
+            var hutang = $("#hutang").val();
+            var nota = $("#nota")[0].files[0];
+            var fd = new FormData();
+
+            fd.append('_token',$("#csrf").val());
+            fd.append('pelanggan_id', pelanggan_id);
+            fd.append('setoran', setoran);
+            fd.append('hutang', hutang);
+            fd.append('nota', nota);
             $.ajax({
-                url: "{{ url('barang/store') }}",
+                url: "{{ url('piutang/store') }}",
                 type: "post",
-                data: {
-                    _token: $("#csrf").val(),
-                    nama_barang: nama_barang, 
-                    harga_beli: harga_beli,
-                    harga_jual: harga_jual,
-                    jumlah: jumlah,
-                    satuan: satuan,
-                    status: status,
-                },
+                data: fd,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
                 success: function(data) {
                     $(".btn-close").click();
                     read();
                 }
             });
+            $(".btn-close").click();
+            read();
         }
 
         // Untuk modal halaman edit show
@@ -85,26 +86,38 @@
 
         // untuk proses update data
         function update(id) {
+            var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
+            var hutang = $("#hutang").val();
+            var nota = $("#nota")[0]?.files[0];
+            var fd = new FormData();
+
+            fd.append('_token',$("#csrf").val());
+            fd.append('pelanggan_id', pelanggan_id);
+            fd.append('setoran', setoran);
+            fd.append('hutang', hutang);
+            fd.append('nota', nota);
             $.ajax({
-                type: "put",
+                type: "post",
                 url: "{{ url('piutang/update') }}/" + id,
-                data: {
-                    _token: $("#csrf").val(),
-                    setoran: setoran
-                },
+                data: fd,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
                 success: function(data) {
                     $(".btn-close").click();
-                    read()
+                    read();
                 }
             });
+            $(".btn-close").click();
+            read();
         }
 
         // untuk delete atau destroy data
         function destroy(id) {
             $.ajax({
                 type: "delete",
-                url: "{{ url('barang/destroy') }}/" + id,
+                url: "{{ url('piutang/destroy') }}/" + id,
                 data: {
                     _token: $("#csrf").val()
                 },

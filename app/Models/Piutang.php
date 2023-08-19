@@ -12,7 +12,9 @@ class Piutang extends Model
     protected $table = 'piutang';
     protected $fillable = [
         'pelanggan_id',
-        'hutang'
+        'hutang',
+        'setoran',
+        'nota'
     ];
 
     public function pelanggan()
