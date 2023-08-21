@@ -8,6 +8,7 @@ use App\Models\{Piutang, Pelanggan};
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class PiutangController extends Controller
 {
@@ -18,7 +19,14 @@ class PiutangController extends Controller
 
     public function read()
     {
-        $data = Piutang::all();
+        $data = [];
+        if(auth()->user()->role === 'administrasi' || auth()->user()->role === 'pemiliktoko' || auth()->user()->role === 'pelayantoko'){
+            $data = Piutang::all();
+        }
+        else if(auth()->user()->role === 'pelanggan'){
+            $pelanggan = Pelanggan::where('user_id', auth()->user()->id)->first();
+            $data = Piutang::where('pelanggan_id', $pelanggan->id)->get();
+        }
         return view('Page.Piutang.read')->with([
             'data' => $data
         ]);
@@ -36,8 +44,7 @@ class PiutangController extends Controller
         $validator = Validator::make($request->all(), [
             'pelanggan_id' => 'required|integer',
             'setoran' => 'nullable|integer',
-            'hutang' => 'nullable|integer',
-            'nota' => 'required|file',
+            'hutang' => 'nullable|integer'
         ]);
  
         if ($validator->fails()) {
@@ -45,17 +52,17 @@ class PiutangController extends Controller
         }
 
         try {
-            $fileName = Carbon::today()->toDateString().Str::random(6).'.'.$request->nota->getClientOriginalExtension();
-            $request->file('nota')->storeAs(
-                'public', $fileName
-            );
+            $fileName = Carbon::today()->toDateString().Str::random(6).'.pdf';
             
-            Piutang::create([
+            $piutang = Piutang::create([
                 'pelanggan_id' => $request->pelanggan_id,
                 'setoran' => $request->setoran > 0 ? $request->setoran : 0,
                 'hutang' => $request->hutang > 0 ? $request->hutang : 0,
                 'nota' => $fileName,
             ]);
+            $pdf = $this->createPDF($piutang->id);
+            $content = $pdf->download()->getOriginalContent();
+            $store = Storage::put('public/'.$fileName,$content);
         } catch (\Throwable $th) {
             return $th;
         }
@@ -83,22 +90,19 @@ class PiutangController extends Controller
 
         try {
             $piutang = Piutang::where('id', $id)->first();
-            $fileName = "";
-            if ($request->file('nota')){
-                Storage::delete('nota_hutang/'.$piutang->nota);
-                $fileName = Carbon::today()->toDateString().Str::random(6).'.'.$request->nota->getClientOriginalExtension();
-                $request->file('nota')->storeAs(
-                    'nota_hutang', $fileName
-                );
-            }
+
+            $fileName = Carbon::today()->toDateString().Str::random(6).'.pdf';
+            Storage::delete('public/'.$piutang->nota);
 
             $piutang->update([
                 'setoran' => $request->setoran,
                 'hutang' => $request->hutang,
-                'nota' => $request->file('nota') ? $fileName : $piutang->nota
+                'nota' => $fileName
             ]);
-
-            return "ok";
+            
+            $pdf = $this->createPDF($piutang->id);
+            $content = $pdf->download()->getOriginalContent();
+            Storage::put('public/'.$fileName,$content);
         } catch (\Throwable $th) {
             return $th;
         }
@@ -107,6 +111,15 @@ class PiutangController extends Controller
     public function destroy($id)
     {
         $data = Piutang::findOrFail($id);
+        Storage::delete('public/'.$data->nota);
         $data->delete();
+    }
+
+    public function createPDF($piutang_id){
+        $piutang = Piutang::where('id', $piutang_id)->with('pelanggan')->first();
+        $pdf = PDF::loadview('PDF.nota_piutang', [
+            'piutang' => $piutang
+        ]);
+        return $pdf;
     }
 }

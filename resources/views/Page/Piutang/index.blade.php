@@ -51,14 +51,12 @@
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
             var hutang = $("#hutang").val();
-            var nota = $("#nota")[0].files[0];
             var fd = new FormData();
 
             fd.append('_token',$("#csrf").val());
             fd.append('pelanggan_id', pelanggan_id);
             fd.append('setoran', setoran);
             fd.append('hutang', hutang);
-            fd.append('nota', nota);
             $.ajax({
                 url: "{{ url('piutang/store') }}",
                 type: "post",
@@ -78,7 +76,7 @@
         // Untuk modal halaman edit show
         function edit(id) {
             $.get("{{ url('piutang/edit') }}/" + id, {}, function(data, status) {
-                $("#exampleModalLabel").html('Bayar Hutang')
+                $("#exampleModalLabel").html('Edit Data Piutang')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
             });
@@ -89,14 +87,12 @@
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
             var hutang = $("#hutang").val();
-            var nota = $("#nota")[0]?.files[0];
             var fd = new FormData();
 
             fd.append('_token',$("#csrf").val());
             fd.append('pelanggan_id', pelanggan_id);
             fd.append('setoran', setoran);
             fd.append('hutang', hutang);
-            fd.append('nota', nota);
             $.ajax({
                 type: "post",
                 url: "{{ url('piutang/update') }}/" + id,
@@ -115,17 +111,19 @@
 
         // untuk delete atau destroy data
         function destroy(id) {
-            $.ajax({
-                type: "delete",
-                url: "{{ url('piutang/destroy') }}/" + id,
-                data: {
-                    _token: $("#csrf").val()
-                },
-                success: function(data) {
-                    $(".btn-close").click();
-                    read()
-                }
-            });
+            if(confirm('Yakin Ingin Menghapus Data?')){
+                $.ajax({
+                    type: "delete",
+                    url: "{{ url('piutang/destroy') }}/" + id,
+                    data: {
+                        _token: $("#csrf").val()
+                    },
+                    success: function(data) {
+                        $(".btn-close").click();
+                        read()
+                    }
+                });
+            }
         }
     </script>
 @endsection

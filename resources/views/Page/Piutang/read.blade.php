@@ -3,6 +3,7 @@
         <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Tanggal</th>
               <th scope="col">Nama Pelanggan</th>
               <th scope="col">Setoran</th>
               <th scope="col">Hutang</th>
@@ -19,11 +20,11 @@
             @foreach($data as $item)
             <tr>
                 <th scope="row">{{ $no++ }}</th>
+                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
                 <td>{{ $item->pelanggan->nama_pelanggan }}</td>
-                <td>{{ $item->setoran }}</td>
-                <td>{{ $item->hutang }}</td>
-                <td><a href={{ asset('storage/'.$item->nota) }} target="_blank"><i class="bi bi-receipt" role="button"></i></a></td>
-                <td>
+                <td>Rp. {{ $item->setoran }}</td>
+                <td>Rp. {{ $item->hutang }}</td>
+                <td><a href={{ asset('storage/'.$item->nota) }} target="_blank"><i class="bi bi-card-image" role="button"></i></a></td>
                   <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();edit({{ $item->id }})"></i>
                     <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
                 </td>

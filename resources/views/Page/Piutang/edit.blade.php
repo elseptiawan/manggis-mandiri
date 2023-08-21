@@ -13,8 +13,8 @@
             <input type="text" name="setoran" id="setoran" class="form-control mb-2" value="{{ $data->setoran }}">
             <label for="hutang">Hutang</label>
             <input type="text" name="hutang" id="hutang" class="form-control mb-2" value="{{ $data->hutang }}">
-            <label for="nota">Nota</label>
-            <input type="file" name="nota" id="nota" class="form-control mb-2">
+            {{-- <label for="nota">Nota</label>
+            <input type="file" name="nota" id="nota" class="form-control mb-2"> --}}
         </div>
         <div class="form-group mt-2">
             <button class="btn btn-success" onClick="event.preventDefault();update({{ $data->id }})">Simpan</button>
