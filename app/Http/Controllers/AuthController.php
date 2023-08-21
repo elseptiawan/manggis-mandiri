@@ -26,10 +26,9 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
- 
-        return redirect()->intended('dashboard');
+        $user = User::where('email', $request->email)->first();
 
-        return redirect('/dashboard');
+        return redirect()->intended('dashboard');
     }
 
     public function logout(Request $request){
