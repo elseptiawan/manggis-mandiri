@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
             $table->integer('pelanggan_id');
-            $table->integer('barang_id');
+            $table->string('barang_id');
             $table->string('nota');
             $table->date('tanggal');
             $table->time('jam');
