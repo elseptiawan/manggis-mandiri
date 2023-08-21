@@ -16,7 +16,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog mw-100 w-75">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -33,6 +33,30 @@
         $(document).ready(function() {
             read();
         });
+        var i = 0;
+        function addBarang() {
+            ++i;
+            $("#dynamicAdd").attr("id","hideButton").hide();
+            $("#add-input-barang").append(`<div class="d-flex mb-3">
+                    <div style="margin-right: 15px">
+                        <label for="nama_barang">Nama Barang <span style="color: red">*</span></label>
+                        <input type="text" name="nama_barang[${i}]" id="nama_barang" class="form-control mb-2" required>
+                    </div>
+                    <div style="margin-right: 15px">
+                        <label for="harga_jual">Harga Jual <span style="color: red">*</span></label>
+                        <input type="number" name="harga_jual[${i}]" id="harga_jual" class="form-control mb-2" required>
+                    </div>
+                    <div style="margin-right: 15px">
+                        <label for="jumlah">Jumlah <span style="color: red">*</span></label>
+                        <input type="number" name="jumlah[${i}]" id="jumlah" class="form-control mb-2" required>
+                    </div>
+                    <div style="margin-right: 15px">
+                        <label for="satuan">Satuan <span style="color: red">*</span></label>
+                        <input type="text" name="satuan[${i}]" id="satuan" class="form-control mb-2" required>
+                    </div>
+                    <button type="button" name="add" id="dynamicAdd" class="btn btn-outline-primary" style="height: 50%; margin-top: 20px" onClick="addBarang()">Tambah Barang</button>
+                </div>`)
+        }
         // Read Database
         function read() {
             $.get("{{ url('penjualan/read') }}", {}, function(data, status) {
@@ -48,13 +72,23 @@
         }
         // untuk proses create data
         function store() {
+            var nama_barang = [];
+            var harga_jual = [];
+            var jumlah = [];
+            var satuan = [];
+            var i = 1;
+            for (let i=0;i<100;i++){
+                if(! $(`input[name="nama_barang[${i}]"]`).length){
+                    break;
+                }
+                nama_barang.push($(`input[name="nama_barang[${i}]"]`).val());
+                harga_jual.push($(`input[name="harga_jual[${i}]"]`).val());
+                jumlah.push($(`input[name="jumlah[${i}]"]`).val());
+                satuan.push($(`input[name="satuan[${i}]"]`).val());
+            }
             var pelanggan_id = $("#pelanggan_id").val();
-            var nama_barang = $("#nama_barang").val();
-            var harga_jual = $("#harga_jual").val();
-            var jumlah = $("#jumlah").val();
-            var satuan = $("#satuan").val();
             var setoran = $("#setoran").val();
-            var nota = $("#nota")[0].files[0];
+            // var nota = $("#nota")[0].files[0];
 
             var fd = new FormData();
 
@@ -65,7 +99,7 @@
             fd.append('jumlah', jumlah);
             fd.append('satuan', satuan);
             fd.append('setoran', setoran);
-            fd.append('nota', nota);
+            // fd.append('nota', nota);
             $.ajax({
                 url: "{{ url('penjualan/store') }}",
                 type: "post",
@@ -78,51 +112,78 @@
                     read();
                 }
             });
+            $(".btn-close").click();
+            read();
         }
 
         // Untuk modal halaman edit show
-        // function edit(id) {
-        //     $.get("{{ url('pelanggan/edit') }}/" + id, {}, function(data, status) {
-        //         $("#exampleModalLabel").html('Edit Data Pelanggan')
-        //         $("#page").html(data);
-        //         $("#exampleModal").modal('show');
-        //     });
-        // }
+        function edit(id) {
+            $.get("{{ url('penjualan/edit') }}/" + id, {}, function(data, status) {
+                $("#exampleModalLabel").html('Edit Data Penjualan')
+                $("#page").html(data);
+                $("#exampleModal").modal('show');
+            });
+        }
 
         // untuk proses update data
-        // function update(id) {
-        //     var nama_pelanggan = $("#nama_pelanggan").val();
-        //     var alamat = $("#alamat").val();
-        //     var no_hp = $("#no_hp").val();
-        //     $.ajax({
-        //         type: "put",
-        //         url: "{{ url('pelanggan/update') }}/" + id,
-        //         data: {
-        //             _token: $("#csrf").val(),
-        //             nama_pelanggan: nama_pelanggan, 
-        //             alamat: alamat,
-        //             no_hp: no_hp,
-        //         },
-        //         success: function(data) {
-        //             $(".btn-close").click();
-        //             read()
-        //         }
-        //     });
-        // }
+        function update(id) {
+            var nama_barang = [];
+            var harga_jual = [];
+            var jumlah = [];
+            var satuan = [];
+            var i = 1;
+            for (let i=0;i<100;i++){
+                if(! $(`input[name="nama_barang[${i}]"]`).length){
+                    break;
+                }
+                nama_barang.push($(`input[name="nama_barang[${i}]"]`).val());
+                harga_jual.push($(`input[name="harga_jual[${i}]"]`).val());
+                jumlah.push($(`input[name="jumlah[${i}]"]`).val());
+                satuan.push($(`input[name="satuan[${i}]"]`).val());
+            }
+            var pelanggan_id = $("#pelanggan_id").val();
+            var setoran = $("#setoran").val();
+
+            var fd = new FormData();
+
+            fd.append('_token',$("#csrf").val());
+            fd.append('pelanggan_id', pelanggan_id);
+            fd.append('nama_barang', nama_barang);
+            fd.append('harga_jual', harga_jual);
+            fd.append('jumlah', jumlah);
+            fd.append('satuan', satuan);
+            fd.append('setoran', setoran);
+            $.ajax({
+                type: "post",
+                url: "{{ url('penjualan/update') }}/" + id,
+                data: fd,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    $(".btn-close").click();
+                    read()
+                }
+            });
+            $(".btn-close").click();
+            read()
+        }
 
         // untuk delete atau destroy data
-        // function destroy(id) {
-        //     $.ajax({
-        //         type: "delete",
-        //         url: "{{ url('pelanggan/destroy') }}/" + id,
-        //         data: {
-        //             _token: $("#csrf").val()
-        //         },
-        //         success: function(data) {
-        //             $(".btn-close").click();
-        //             read()
-        //         }
-        //     });
-        // }
+        function destroy(id) {
+            if(confirm('Yakin Ingin Menghapus Data? Data Barang dan Piutang Terkait Penjualan Ini Juga Akan Terhapus!')){
+                $.ajax({
+                    type: "delete",
+                    url: "{{ url('penjualan/destroy') }}/" + id,
+                    data: {
+                        _token: $("#csrf").val()
+                    },
+                    success: function(data) {
+                        $(".btn-close").click();
+                        read()
+                    }
+                });
+            }
+        }
     </script>
 @endsection
