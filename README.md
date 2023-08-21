@@ -23,5 +23,5 @@
 12. Buka web pada link `http://localhost:8000/`
 
 Data Admin :
-email : admin@gmail.com
-password : password
+- email : admin@gmail.com
+- password : password
