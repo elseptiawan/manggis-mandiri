@@ -105,17 +105,19 @@
 
         // untuk delete atau destroy data
         function destroy(id) {
-            $.ajax({
-                type: "delete",
-                url: "{{ url('pelanggan/destroy') }}/" + id,
-                data: {
-                    _token: $("#csrf").val()
-                },
-                success: function(data) {
-                    $(".btn-close").click();
-                    read()
-                }
-            });
+            if(confirm('Yakin Ingin Menghapus Data?')){
+                $.ajax({
+                    type: "delete",
+                    url: "{{ url('pelanggan/destroy') }}/" + id,
+                    data: {
+                        _token: $("#csrf").val()
+                    },
+                    success: function(data) {
+                        $(".btn-close").click();
+                        read()
+                    }
+                });
+            }
         }
     </script>
 @endsection

@@ -48,7 +48,7 @@ class PelangganController extends Controller
             $user = User::create([
                 'name' => $request->nama_pelanggan,
                 'email' => $request->email,
-                'password' => Hash::make($request->passsword),
+                'password' => Hash::make($request->password),
                 'role' => 'pelanggan'
             ]);
 
@@ -94,6 +94,8 @@ class PelangganController extends Controller
     public function destroy($id)
     {
         $data = Pelanggan::findOrFail($id);
+        $user = User::where('id', $data->user_id)->first();
         $data->delete();
+        $user->delete();
     }
 }
