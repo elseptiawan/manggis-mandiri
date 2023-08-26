@@ -5,6 +5,7 @@
               <th scope="col">#</th>
               <th scope="col">Nama Pelanggan</th>
               <th scope="col">Detail</th>
+              <th scope="col">Rincian Hutang</th>
             </tr>
           </thead>
           
@@ -18,6 +19,7 @@
                 <th scope="row">{{ $no++ }}</th>
                 <td>{{ $item->pelanggan->nama_pelanggan }}</td>
                 <td><i class="bi bi-card-list" style="margin-right: 5px; color: blue; cursor: pointer" onClick="event.preventDefault();detailpiutang({{ $item->pelanggan_id }})"></i></td>
+                <td><a href="{{route("rincianHutang", [$item->pelanggan_id])}}" target="_blank"><i class="bi bi-card-list" style="margin-right: 5px; color: blue; cursor: pointer"></i></a></td>
                   {{-- <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();edit({{ $item->id }})"></i>
                     <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
                 </td> --}}
