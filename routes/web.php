@@ -71,6 +71,7 @@ Route::group(['prefix' => '/laporan','middleware' => ['auth', 'role:administrasi
     Route::get('/',[LaporanController::class, "index"]);
     Route::get('/piutang',[LaporanController::class, "readpiutang"]);
     Route::get('/piutang/{id}',[LaporanController::class, "detailpiutang"]);
+    Route::get('/rincian-hutang/{id}',[LaporanController::class, "rincianHutang"])->name('rincianHutang');
     Route::get('/barang-masuk',[LaporanController::class, "readbarangmasuk"]);
     Route::get('/barang-keluar',[LaporanController::class, "readbarangkeluar"]);
 });
