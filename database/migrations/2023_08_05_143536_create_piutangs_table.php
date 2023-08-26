@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('pelanggan_id');
             $table->integer('hutang');
             $table->integer('setoran');
+            $table->string('keterangan');
             $table->string('nota');
             $table->timestamps();
         });
