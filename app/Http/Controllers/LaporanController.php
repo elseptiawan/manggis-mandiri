@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Piutang, Barang};
+use PDF;
 
 class LaporanController extends Controller
 {
@@ -50,5 +51,21 @@ class LaporanController extends Controller
         return view('Page.Laporan.readbarangkeluar')->with([
             'data' => $data
         ]);
+    }
+
+    public function rincianHutang($pelanggan_id){
+        $piutang = Piutang::where('pelanggan_id', $pelanggan_id)->with('pelanggan')->get();
+        $total_hutang = 0;
+        $total_setoran = 0;
+        foreach($piutang as $p){
+            $total_hutang += $p->hutang;
+            $total_setoran += $p->setoran;
+        }
+        $pdf = PDF::loadview('PDF.rincian_hutang', [
+            'piutang' => $piutang,
+            'total_hutang' => $total_hutang,
+            'total_setoran' => $total_setoran,
+        ]);
+        return $pdf->stream('rincian_hutang', array('Attachment'=>0));
     }
 }

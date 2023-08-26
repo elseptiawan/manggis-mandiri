@@ -51,6 +51,12 @@
                 $("#read").html(data);
             });
         }
+        function rincianhutang(id) {
+            $.get("{{ url('laporan/rincian-hutang') }}/" + id, {}, function(data, status) {
+                // $("#page-title").text('Detail Piutang')
+                // $("#read").html(data);
+            });
+        }
         function readbarangmasuk() {
             $.get("{{ url('laporan/barang-masuk') }}", {}, function(data, status) {
                 $("#page-title").text('Laporan Barang Masuk')
