@@ -44,7 +44,8 @@ class PiutangController extends Controller
         $validator = Validator::make($request->all(), [
             'pelanggan_id' => 'required|integer',
             'setoran' => 'nullable|integer',
-            'hutang' => 'nullable|integer'
+            'hutang' => 'nullable|integer',
+            'keterangan' => 'required|string'
         ]);
  
         if ($validator->fails()) {
@@ -59,6 +60,7 @@ class PiutangController extends Controller
                 'setoran' => $request->setoran > 0 ? $request->setoran : 0,
                 'hutang' => $request->hutang > 0 ? $request->hutang : 0,
                 'nota' => $fileName,
+                'keterangan' => $request->keterangan
             ]);
             $pdf = $this->createPDF($piutang->id);
             $content = $pdf->download()->getOriginalContent();
@@ -82,6 +84,7 @@ class PiutangController extends Controller
             'setoran' => 'nullable|integer',
             'hutang' => 'nullable|integer',
             'nota' => 'nullable',
+            'keterangan' => 'required|string'
         ]);
  
         if ($validator->fails()) {
@@ -97,7 +100,8 @@ class PiutangController extends Controller
             $piutang->update([
                 'setoran' => $request->setoran,
                 'hutang' => $request->hutang,
-                'nota' => $fileName
+                'nota' => $fileName,
+                'keterangan' => $request->keterangan
             ]);
             
             $pdf = $this->createPDF($piutang->id);

@@ -13,6 +13,8 @@
             <input type="number" name="setoran" id="setoran" class="form-control mb-2">
             <label for="hutang">Hutang</label>
             <input type="number" name="hutang" id="hutang" class="form-control mb-2">
+            <label for="keterangan">Keterangan</label>
+            <input type="text" name="keterangan" id="keterangan" class="form-control mb-2">
             {{-- <label for="nota">Nota <span style="color: red">*</span></label>
             <input type="file" name="nota" id="nota" class="form-control mb-2"> --}}
         </div>

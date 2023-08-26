@@ -89,15 +89,16 @@ class PenjualanController extends Controller
                 'tanggal' => Carbon::today()->toDateString(),
                 'jam' => Carbon::now()->toTimeString(),
                 'setoran' => $request->setoran,
-                'piutang' => $harga_total > $request->setoran ? $harga_total - $request->setoran : 0
+                'piutang' => $harga_total
             ]);
 
             if (($harga_total - $request->setoran) !== 0){
                     Piutang::create([
                         'pelanggan_id' => $request->pelanggan_id,
-                        'setoran' => $harga_total < $request->setoran ? $request->setoran - $harga_total : 0,
-                        'hutang' => $harga_total > $request->setoran ? $harga_total - $request->setoran : 0,
-                        'nota' => $penjualan->nota
+                        'setoran' => $request->setoran,
+                        'hutang' => $harga_total,
+                        'nota' => $penjualan->nota,
+                        'keterangan' => 'Transaksi Penjualan'
                     ]);
             }
             $pdf = $this->createPDF($penjualan->id);
@@ -173,7 +174,7 @@ class PenjualanController extends Controller
                 'pelanggan_id' => $request->pelanggan_id,
                 'nota' => $fileName,
                 'setoran' => $request->setoran,
-                'piutang' => $harga_total > $request->setoran ? $harga_total - $request->setoran : 0
+                'piutang' => $harga_total
             ]);
 
             if (($harga_total - $request->setoran) == 0){

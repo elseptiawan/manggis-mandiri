@@ -8,8 +8,11 @@
         @endif
         <div class="d-flex justify-content-between mb-3">
             <h1 class="h3 mb-3">Piutang</h1>
+            @if(auth()->user()->role != "pelanggan")
             <button class="btn btn-outline-primary" onClick="create()">
-                <i class="bi bi-file-earmark-plus"></i> Tambah Data</button>
+                <i class="bi bi-file-earmark-plus"></i> Tambah Data
+            </button>
+            @endif
         </div>
         <div class="row" id="read"></div>
     </div>
@@ -51,12 +54,14 @@
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
             var hutang = $("#hutang").val();
+            var keterangan = $("#keterangan").val();
             var fd = new FormData();
 
             fd.append('_token',$("#csrf").val());
             fd.append('pelanggan_id', pelanggan_id);
             fd.append('setoran', setoran);
             fd.append('hutang', hutang);
+            fd.append('keterangan', keterangan);
             $.ajax({
                 url: "{{ url('piutang/store') }}",
                 type: "post",

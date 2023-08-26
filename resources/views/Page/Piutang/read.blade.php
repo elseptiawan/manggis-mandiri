@@ -7,6 +7,7 @@
               <th scope="col">Nama Pelanggan</th>
               <th scope="col">Setoran</th>
               <th scope="col">Hutang</th>
+              <th scope="col">Keterangan</th>
               <th scope="col">Nota</th>
               <th scope="col"></th>
             </tr>
@@ -24,6 +25,7 @@
                 <td>{{ $item->pelanggan->nama_pelanggan }}</td>
                 <td>Rp. {{ $item->setoran }}</td>
                 <td>Rp. {{ $item->hutang }}</td>
+                <td>{{ $item->keterangan }}</td>
                 <td><a href={{ asset('storage/'.$item->nota) }} target="_blank"><i class="bi bi-card-image" role="button"></i></a></td>
                   <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();edit({{ $item->id }})"></i>
                     <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
