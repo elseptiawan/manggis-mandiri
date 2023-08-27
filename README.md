@@ -13,12 +13,13 @@
 2. Extract folder program yang telah didownload
 3. Buka terminal pada direktori folder program
 4. Install package menggunakan composer dengan command `composer install`, link download composer jika belum punya `https://getcomposer.org/download/`
-5. Migrasi database dengan command `php artisan migrate`
-6. Seeding data admin dengan command `php artisan db:seed --class=UserSeeder`
-7. Link storage ke public dengan command `php artisan storage:link`
-8. Buat file dengan nama `.env`
-9. Copy semua yang ada pada `.env.example` ke file `.env`
-10. Pada line ke 14 ubah nama database sesuai dengan database baru yang telah dibuat di phpmyadmin, misal `DB_DATABASE=manggis_mandiri`
+5. Buat file dengan nama `.env`
+6. Copy semua yang ada pada `.env.example` ke file `.env`
+7. Pada line ke 14 ubah nama database sesuai dengan database baru yang telah dibuat di phpmyadmin, misal `DB_DATABASE=manggis_mandiri`
+8. Migrasi database dengan command `php artisan migrate:fresh`
+9. Seeding data admin dengan command `php artisan db:seed --class=UserSeeder`
+10. Link storage ke public dengan command `php artisan storage:link`
+
 11. Jalankan server dengan command `php artisan serve`
 12. Buka web pada link `http://localhost:8000/`
 
