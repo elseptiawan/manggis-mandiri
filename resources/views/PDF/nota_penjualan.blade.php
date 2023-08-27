@@ -19,17 +19,80 @@
 		table tr th{
 			font-size: 9pt;
 		}
+
+        .table{
+            margin-top: 150px;
+        }
+
+        .right-header table{
+            width: 100%;
+        }
+
+        .right-header table tr td{
+            border-bottom: 1px solid black;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* .header{
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border: 2px solid black;
+        } */
+
+        .left-header{
+            float: left;
+            width: 25%;
+            margin-top: 90px;
+        }
+        .right-header{
+            float: right;
+            text-align: center;
+            width: 40%;
+        }
+
+        .footer{
+            margin-top: 20px;
+        }
+        .left-footer{
+            width: 35%;
+            float: left;
+            text-align: center;
+        }
+        .right-footer{
+            width: 35%;
+            float: right;
+            text-align: center;
+        }
 	</style>
  
-    <h4>Nota Penjualan {{ \Carbon\Carbon::parse($penjualan->created_at)->translatedFormat('l, d F Y') }}</h4>
-    <h6>Pelanggan : {{ $penjualan->pelanggan->nama_pelanggan }}</h6>
+    {{-- <div class="header">
+    </div> --}}
+    <div class="left-header">
+        NOTA NO. ........
+    </div>
+    <div class="right-header">
+        <table cellspacing="0">
+            <tr>
+                <td>{{ \Carbon\Carbon::parse($penjualan->created_at)->translatedFormat('l, d F Y') }}</td>
+            </tr>
+            <tr>
+                <td>{{ $penjualan->pelanggan->nama_pelanggan }}</td>
+            </tr>
+            <tr>
+                <td>{{ $penjualan->pelanggan->alamat }}</td>
+            </tr>
+        </table>
+    </div>
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
 				<th>Banyak Barang</th>
 				<th>Nama Barang</th>
 				<th>Harga</th>
-				<th>Total</th>
+				<th>Jumlah</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,12 +106,12 @@
 			</tr>
 			@endforeach
             <tr>
-                <td style="border-right: none"></td>
-                <td style="border-left: none; border-rigth: none;"></td>
-                <th style="border-left: none">Total Harga</th>
+                <td style="border-right: none; border-bottom: none; border-left:none"></td>
+                <td style="border-left: none; border-rigth: none; border-bottom: none"></td>
+                <th >Jumlah</th>
                 <td>Rp. {{ $harga_total }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td style="border-right: none"></td>
                 <td style="border-left: none; border-rigth: none;"></td>
                 <th style="border-left: none">Dibayar</th>
@@ -59,9 +122,18 @@
                 <td style="border-left: none; border-rigth: none;"></td>
                 <th style="border-left: none">Hutang</th>
                 <td>Rp. {{ ($harga_total - $penjualan->setoran) > 0 ? ($harga_total - $penjualan->setoran) : 0 }}</td>
-            </tr>
+            </tr> --}}
 		</tbody>
 	</table>
+
+    <div class="footer">
+        <div class="left-footer">
+            Tanda Terima
+        </div>
+        <div class="right-footer">
+            Hormat Kami,
+        </div>
+    </div>
  
 </body>
 </html>
