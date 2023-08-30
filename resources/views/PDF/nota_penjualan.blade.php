@@ -66,8 +66,17 @@
             float: right;
             text-align: center;
         }
+
+        center{
+            margin-bottom: 10px;
+        }
 	</style>
  
+    <center>
+        <h3>TB. Manggis Mandiri</h3>
+        <h6>Jalan Lintas Teluk Kuantan - Lubuk Jambi, Desa Koto Kari, Kecamatan Kuantan Tengah</h6>
+        <h6>Hp : 082171741021</h6>
+    </center>
     {{-- <div class="header">
     </div> --}}
     <div class="left-header">
@@ -76,7 +85,7 @@
     <div class="right-header">
         <table cellspacing="0">
             <tr>
-                <td>{{ \Carbon\Carbon::parse($penjualan->created_at)->translatedFormat('l, d F Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($penjualan->tanggal)->translatedFormat('l, d F Y') }}</td>
             </tr>
             <tr>
                 <td>{{ $penjualan->pelanggan->nama_pelanggan }}</td>
