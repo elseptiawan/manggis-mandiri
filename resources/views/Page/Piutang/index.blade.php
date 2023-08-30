@@ -89,6 +89,9 @@
                 $("#exampleModalLabel").html('Edit Data Piutang')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
+                $('#tanggal').datepicker({
+                    format: 'dd-mm-yyyy  '
+                });
             });
         }
 
@@ -97,12 +100,16 @@
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
             var hutang = $("#hutang").val();
+            var tanggal = $("#tanggal").val();
+            var keterangan = $("#keterangan").val();
             var fd = new FormData();
 
             fd.append('_token',$("#csrf").val());
             fd.append('pelanggan_id', pelanggan_id);
             fd.append('setoran', setoran);
             fd.append('hutang', hutang);
+            fd.append('tanggal', tanggal);
+            fd.append('keterangan', keterangan);
             $.ajax({
                 type: "post",
                 url: "{{ url('piutang/update') }}/" + id,

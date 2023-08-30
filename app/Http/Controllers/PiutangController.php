@@ -85,7 +85,8 @@ class PiutangController extends Controller
             'setoran' => 'nullable|integer',
             'hutang' => 'nullable|integer',
             'nota' => 'nullable',
-            'keterangan' => 'required|string'
+            'keterangan' => 'required|string',
+            'tanggal' => 'required'
         ]);
  
         if ($validator->fails()) {
@@ -102,7 +103,8 @@ class PiutangController extends Controller
                 'setoran' => $request->setoran,
                 'hutang' => $request->hutang,
                 'nota' => $fileName,
-                'keterangan' => $request->keterangan
+                'keterangan' => $request->keterangan,
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)
             ]);
             
             $pdf = $this->createPDF($piutang->id);

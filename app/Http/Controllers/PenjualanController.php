@@ -180,17 +180,12 @@ class PenjualanController extends Controller
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
             ]);
 
-            if (($harga_total - $request->setoran) == 0){
-                $piutang->delete();
-            }
-            else{
-                $piutang->update([
-                    'setoran' => $harga_total < $request->setoran ? $request->setoran - $harga_total : 0,
-                    'hutang' => $harga_total > $request->setoran ? $harga_total - $request->setoran : 0,
-                    'nota' => $penjualan->nota,
-                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)
-                ]);
-            }
+            $piutang->update([
+                'setoran' => $request->setoran,
+                'hutang' => $harga_total,
+                'nota' => $penjualan->nota,
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)
+            ]);
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
