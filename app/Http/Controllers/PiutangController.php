@@ -60,7 +60,8 @@ class PiutangController extends Controller
                 'setoran' => $request->setoran > 0 ? $request->setoran : 0,
                 'hutang' => $request->hutang > 0 ? $request->hutang : 0,
                 'nota' => $fileName,
-                'keterangan' => $request->keterangan
+                'keterangan' => $request->keterangan,
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
             ]);
             $pdf = $this->createPDF($piutang->id);
             $content = $pdf->download()->getOriginalContent();

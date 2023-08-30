@@ -15,7 +15,8 @@ class Piutang extends Model
         'hutang',
         'setoran',
         'nota',
-        'keterangan'
+        'keterangan',
+        'tanggal',
     ];
 
     public function pelanggan()

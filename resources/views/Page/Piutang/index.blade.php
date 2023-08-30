@@ -47,6 +47,9 @@
                 $("#exampleModalLabel").html('Tambah Data Piutang')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
+                $('#tanggal').datepicker({
+                    format: 'dd-mm-yyyy  '
+                });
             });
         }
         // untuk proses create data
@@ -55,6 +58,7 @@
             var setoran = $("#setoran").val();
             var hutang = $("#hutang").val();
             var keterangan = $("#keterangan").val();
+            var tanggal = $("#tanggal").val();
             var fd = new FormData();
 
             fd.append('_token',$("#csrf").val());
@@ -62,6 +66,7 @@
             fd.append('setoran', setoran);
             fd.append('hutang', hutang);
             fd.append('keterangan', keterangan);
+            fd.append('tanggal', tanggal);
             $.ajax({
                 url: "{{ url('piutang/store') }}",
                 type: "post",
