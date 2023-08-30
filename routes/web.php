@@ -52,6 +52,7 @@ Route::group(['prefix' => '/piutang','middleware' => ['auth', 'role:administrasi
     Route::get('/',[PiutangController::class, "index"])->name('piutang');
     Route::get('/read',[PiutangController::class, "read"]);
     Route::get('/create',[PiutangController::class, "create"]);
+    Route::get('/get-sisa-hutang/{id}',[PiutangController::class, "getSisaHutang"]);
     Route::post('/store',[PiutangController::class, "store"]);
     Route::get('/edit/{id}',[PiutangController::class, "edit"]);
     Route::post('/update/{id}',[PiutangController::class, "update"]);

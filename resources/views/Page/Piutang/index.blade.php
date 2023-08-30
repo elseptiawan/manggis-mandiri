@@ -37,6 +37,16 @@
             read();
         });
         // Read Database
+        function getSisaHutang(id) {
+            $.get("{{ url('piutang/get-sisa-hutang') }}/" + id, {}, function(data, status) {
+                // $("#sisaHutang").text(data.sisa_hutang);
+                $("#sisaHutang").html(`<label for="sisa_hutang">Sisa Hutang</label>
+            <input type='text' id="sisa_hutang" class="form-control mb-3" value=" ${data.sisa_hutang}" readonly/>
+            <label for="sisa_saldo">Sisa Saldo</label>
+            <input type='text' id="sisa_saldo" class="form-control mb-3" value=" ${data.sisa_saldo}" readonly/>`)
+            
+            });
+        }
         function read() {
             $.get("{{ url('piutang/read') }}", {}, function(data, status) {
                 $("#read").html(data);

@@ -44,7 +44,6 @@ class PiutangController extends Controller
         $validator = Validator::make($request->all(), [
             'pelanggan_id' => 'required|integer',
             'setoran' => 'nullable|integer',
-            'hutang' => 'nullable|integer',
             'keterangan' => 'required|string'
         ]);
  
@@ -58,7 +57,7 @@ class PiutangController extends Controller
             $piutang = Piutang::create([
                 'pelanggan_id' => $request->pelanggan_id,
                 'setoran' => $request->setoran > 0 ? $request->setoran : 0,
-                'hutang' => $request->hutang > 0 ? $request->hutang : 0,
+                'hutang' => 0,
                 'nota' => $fileName,
                 'keterangan' => $request->keterangan,
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
@@ -73,9 +72,29 @@ class PiutangController extends Controller
 
     public function edit($id){
         $data = Piutang::where('id', $id)->with('pelanggan')->first();
+        $semua_piutang = Piutang::where('pelanggan_id', $data->pelanggan_id)->get();
+        $total_hutang = 0;
+        $total_setoran = 0;
+        foreach($semua_piutang as $p){
+            $total_hutang += $p->hutang;
+            $total_setoran += $p->setoran;
+        }
+
+        $sisa_hutang = 0;
+        $sisa_saldo = 0;
+
+        if($total_hutang >= $total_setoran){
+            $sisa_hutang = $total_hutang - $total_setoran;
+        }
+        else{
+            $sisa_saldo = $total_setoran - $total_hutang;
+        }
+
         return view('Page.Piutang.edit')->with([
             'data' => $data,
-            'pelanggan' => Pelanggan::all()
+            'pelanggan' => Pelanggan::all(),
+            'sisa_hutang' => $sisa_hutang,
+            'sisa_saldo' => $sisa_saldo
         ]);
     }
 
@@ -128,5 +147,30 @@ class PiutangController extends Controller
             'piutang' => $piutang
         ]);
         return $pdf;
+    }
+
+    public function getSisaHutang($id){
+        $piutang = Piutang::where('pelanggan_id', $id)->get();
+        $total_hutang = 0;
+        $total_setoran = 0;
+        foreach($piutang as $p){
+            $total_hutang += $p->hutang;
+            $total_setoran += $p->setoran;
+        }
+
+        $sisa_hutang = 0;
+        $sisa_saldo = 0;
+
+        if($total_hutang >= $total_setoran){
+            $sisa_hutang = $total_hutang - $total_setoran;
+        }
+        else{
+            $sisa_saldo = $total_setoran - $total_hutang;
+        }
+
+        return $data = [
+            'sisa_hutang' => $sisa_hutang,
+            'sisa_saldo' => $sisa_saldo
+        ];
     }
 }
