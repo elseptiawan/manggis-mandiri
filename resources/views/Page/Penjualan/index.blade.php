@@ -68,7 +68,11 @@
                 $("#exampleModalLabel").html('Tambah Data Penjualan')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
+                $('#tanggal').datepicker({
+                    format: 'dd-mm-yyyy  '
+                });
             });
+            
         }
         // untuk proses create data
         function store() {
@@ -88,6 +92,7 @@
             }
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
+            var tanggal = $("#tanggal").val();
             // var nota = $("#nota")[0].files[0];
 
             var fd = new FormData();
@@ -99,6 +104,7 @@
             fd.append('jumlah', jumlah);
             fd.append('satuan', satuan);
             fd.append('setoran', setoran);
+            fd.append('tanggal', tanggal);
             // fd.append('nota', nota);
             $.ajax({
                 url: "{{ url('penjualan/store') }}",

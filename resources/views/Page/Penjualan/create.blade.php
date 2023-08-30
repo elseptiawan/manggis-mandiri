@@ -1,14 +1,16 @@
 <div class="p2">
     <form class="form-floating">
         <div class="form-group">
-            <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+            <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
             <label for="pelanggan_id">Pelanggan <span style="color: red">*</span></label>
             <select id="pelanggan_id" class="form-select form-select-sm mb-3 p-2" aria-label=".form-select-sm example">
                 <option selected disabled hidden>Nama Pelanggan</option>
-                @foreach($data as $item)
+                @foreach ($data as $item)
                     <option style="padding: 50px;" value={{ $item->id }}>{{ $item->nama_pelanggan }}</option>
                 @endforeach
-              </select>
+            </select>
+            <label for="tanggal">Tanggal <span style="color: red">*</span></label>
+            <input type='text' id="tanggal" class="form-control mb-3" placeholder="Pilih Tanggal"/>
             <div id="add-input-barang">
                 <div class="d-flex mb-3">
                     <div style="margin-right: 15px">
@@ -27,7 +29,8 @@
                         <label for="satuan">Satuan <span style="color: red">*</span></label>
                         <input type="text" name="satuan[0]" id="satuan" class="form-control mb-2" required>
                     </div>
-                    <button type="button" name="add" id="dynamicAdd" class="btn btn-outline-primary" style="height: 50%; margin-top: 20px" onClick="addBarang()">Tambah Barang</button>
+                    <button type="button" name="add" id="dynamicAdd" class="btn btn-outline-primary"
+                        style="height: 50%; margin-top: 20px" onClick="addBarang()">Tambah Barang</button>
                 </div>
             </div>
             <label for="setoran">Setoran <span style="color: red">*</span></label>

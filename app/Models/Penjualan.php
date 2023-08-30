@@ -15,7 +15,6 @@ class Penjualan extends Model
         'barang_id',
         'nota',
         'tanggal',
-        'jam',
         'setoran',
         'piutang'
     ];

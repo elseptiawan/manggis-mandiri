@@ -22,7 +22,7 @@ class PenjualanController extends Controller
 
     public function read()
     {
-        $data = Penjualan::with('pelanggan')->get();
+        $data = Penjualan::orderBy('tanggal', 'ASC')->with('pelanggan')->get();
 
         foreach($data as $item){
             $split_id_barang = explode(';', $item->barang_id);
@@ -53,7 +53,8 @@ class PenjualanController extends Controller
             'harga_jual' => 'required',
             'jumlah' => 'required',
             'satuan' => 'required',
-            'setoran' => 'required'
+            'setoran' => 'required',
+            'tanggal' => 'required',
         ]);
  
         if ($validator->fails()) {
@@ -86,8 +87,7 @@ class PenjualanController extends Controller
                 'pelanggan_id' => $request->pelanggan_id,
                 'barang_id' => implode(';', $id_barang_inserted),
                 'nota' => $fileName,
-                'tanggal' => Carbon::today()->toDateString(),
-                'jam' => Carbon::now()->toTimeString(),
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
                 'setoran' => $request->setoran,
                 'piutang' => $harga_total
             ]);
@@ -98,6 +98,7 @@ class PenjualanController extends Controller
                         'setoran' => $request->setoran,
                         'hutang' => $harga_total,
                         'nota' => $penjualan->nota,
+                        'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
                         'keterangan' => 'Transaksi Penjualan'
                     ]);
             }
