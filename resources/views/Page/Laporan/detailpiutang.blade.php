@@ -42,7 +42,7 @@
           </tbody>
     </table>
 
-    @if($total_hutang > $total_setoran)
+    @if($total_hutang >= $total_setoran)
     <h6 class="h4 mb-3">Sisa Hutang : Rp. {{ $total_hutang > $total_setoran ?  $total_hutang - $total_setoran : 0 }}</h6>
     @else
     <h6 class="h4 mb-3">Sisa Saldo : Rp. {{ $total_hutang < $total_setoran ? $total_setoran - $total_hutang : 0 }}</h6>
