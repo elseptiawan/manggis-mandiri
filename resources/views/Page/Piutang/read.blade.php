@@ -6,7 +6,7 @@
               <th scope="col">Tanggal</th>
               <th scope="col">Nama Pelanggan</th>
               <th scope="col">Setoran</th>
-              <th scope="col">Hutang</th>
+              <th scope="col">Hutang per Nota</th>
               <th scope="col">Keterangan</th>
               <th scope="col">Nota</th>
               <th scope="col"></th>
