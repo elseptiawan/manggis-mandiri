@@ -14,8 +14,8 @@
             <input type='text' id="tanggal" class="form-control mb-3" placeholder="Pilih Tanggal" />
             <label for="setoran">Setoran</label>
             <input type="number" name="setoran" id="setoran" class="form-control mb-2">
-            <label for="hutang">Hutang</label>
-            <input type="number" name="hutang" id="hutang" class="form-control mb-2">
+            {{-- <label for="hutang">Hutang</label>
+            <input type="number" name="hutang" id="hutang" class="form-control mb-2"> --}}
             <label for="keterangan">Keterangan <span style="color: red">*</span></label>
             <input type="text" name="keterangan" id="keterangan" class="form-control mb-2">
             {{-- <label for="nota">Nota <span style="color: red">*</span></label>

@@ -15,8 +15,8 @@
             <input type='text' id="tanggal" class="form-control mb-3" value="{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}" />
             <label for="setoran">Setoran</label>
             <input type="text" name="setoran" id="setoran" class="form-control mb-2" value="{{ $data->setoran }}">
-            <label for="hutang">Hutang</label>
-            <input type="text" name="hutang" id="hutang" class="form-control mb-2" value="{{ $data->hutang }}">
+            {{-- <label for="hutang">Hutang</label>
+            <input type="text" name="hutang" id="hutang" class="form-control mb-2" value="{{ $data->hutang }}"> --}}
             <label for="keterangan">Keterangan <span style="color: red">*</span></label>
             <input type="text" name="keterangan" id="keterangan" class="form-control mb-2" value="{{ $data->keterangan }}">
             {{-- <label for="nota">Nota</label>
