@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('setoran');
             $table->string('keterangan');
             $table->string('nota');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
