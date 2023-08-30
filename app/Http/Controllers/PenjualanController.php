@@ -136,6 +136,7 @@ class PenjualanController extends Controller
             'jumlah' => 'required',
             'satuan' => 'required',
             'setoran' => 'required',
+            'tanggal' => 'required',
             'nota' => 'nullable'
         ]);
  
@@ -175,7 +176,8 @@ class PenjualanController extends Controller
                 'pelanggan_id' => $request->pelanggan_id,
                 'nota' => $fileName,
                 'setoran' => $request->setoran,
-                'piutang' => $harga_total
+                'piutang' => $harga_total,
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
             ]);
 
             if (($harga_total - $request->setoran) == 0){
@@ -185,7 +187,8 @@ class PenjualanController extends Controller
                 $piutang->update([
                     'setoran' => $harga_total < $request->setoran ? $request->setoran - $harga_total : 0,
                     'hutang' => $harga_total > $request->setoran ? $harga_total - $request->setoran : 0,
-                    'nota' => $penjualan->nota
+                    'nota' => $penjualan->nota,
+                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)
                 ]);
             }
             DB::commit();

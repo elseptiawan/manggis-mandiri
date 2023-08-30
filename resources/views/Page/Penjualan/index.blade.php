@@ -128,6 +128,9 @@
                 $("#exampleModalLabel").html('Edit Data Penjualan')
                 $("#page").html(data);
                 $("#exampleModal").modal('show');
+                $('#tanggal').datepicker({
+                    format: 'dd-mm-yyyy  '
+                });
             });
         }
 
@@ -149,6 +152,7 @@
             }
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
+            var tanggal = $("#tanggal").val();
 
             var fd = new FormData();
 
@@ -159,6 +163,7 @@
             fd.append('jumlah', jumlah);
             fd.append('satuan', satuan);
             fd.append('setoran', setoran);
+            fd.append('tanggal', tanggal);
             $.ajax({
                 type: "post",
                 url: "{{ url('penjualan/update') }}/" + id,
