@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('barang_id');
             $table->string('nota');
             $table->date('tanggal');
-            $table->time('jam');
             $table->integer('setoran');
             $table->integer('piutang');
             $table->timestamps();
