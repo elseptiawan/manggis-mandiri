@@ -16,10 +16,11 @@
                     <div style="margin-right: 15px" class="w-25">
                         <label for="nama_barang">Nama Barang <span style="color: red">*</span></label>
                         <select name="id_barang[0]" class="form control form-select form-select-sm mb-2 p-2"
-                            aria-label=".form-select-sm example" onchange="document.getElementById('stok[0]').style.display = 'inline-block';">
+                            aria-label=".form-select-sm example">
                             <option selected disabled hidden>Pilih Barang</option>
                             @foreach ($barang as $item)
-                                <option style="padding: 50px;" value={{ $item->id }}>{{ $item->nama_barang }} <span class="text-muted">(stok: {{ $item->stok }})</span>
+                                <option style="padding: 50px;" value={{ $item->id }}>{{ $item->nama_barang }} <span
+                                        class="text-muted">(stok: {{ $item->stok }})</span>
                                 </option>
                             @endforeach
                         </select>

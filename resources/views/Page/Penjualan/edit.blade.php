@@ -11,32 +11,36 @@
                 @endforeach
             </select>
             <label for="tanggal">Tanggal <span style="color: red">*</span></label>
-            <input type='text' id="tanggal" class="form-control mb-3" value="{{ \Carbon\Carbon::parse($penjualan->tanggal)->format('d-m-Y') }}" />
+            <input type='text' id="tanggal" class="form-control mb-3"
+                value="{{ \Carbon\Carbon::parse($penjualan->tanggal)->format('d-m-Y') }}" />
             <div class="add-input-barang">
                 @php
                     $i = 0;
                 @endphp
                 @foreach ($penjualan->barang as $barang)
                     <div class="d-flex mb-3">
-                        <div style="margin-right: 15px">
-                            <label for="nama_barang">Nama Barang <span style="color: red">*</span></label>
-                            <input type="text" name="nama_barang[{{ $i }}]" id="nama_barang"
-                                class="form-control mb-2" value="{{ $barang->stok_barang->nama_barang }}" required>
+                        <div style="margin-right: 15px" class="w-25">
+                            <label for="id_barang">Nama Barang <span style="color: red">*</span></label>
+                            <select name="id_barang[0]" class="form control form-select form-select-sm mb-2 p-2"
+                                aria-label=".form-select-sm example">
+                                <option selected disabled hidden>Pilih Barang</option>
+                                @foreach ($stok_barang as $item)
+                                    <option style="padding: 50px;" value={{ $item->id }}
+                                        @if ($item->id == $barang->id_barang) selected @endif>{{ $item->nama_barang }}
+                                        <span class="text-muted">(stok: {{ $item->stok }})</span>
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div style="margin-right: 15px">
+                        <div style="margin-right: 15px" class="w-25">
                             <label for="harga_jual">Harga Jual <span style="color: red">*</span></label>
                             <input type="number" name="harga_jual[{{ $i }}]" id="harga_jual"
                                 class="form-control mb-2" value="{{ $barang->harga_jual }}" required>
                         </div>
-                        <div style="margin-right: 15px">
+                        <div style="margin-right: 15px" class="w-25">
                             <label for="jumlah">Jumlah <span style="color: red">*</span></label>
                             <input type="number" name="jumlah[{{ $i }}]" id="jumlah"
                                 class="form-control mb-2" value="{{ $barang->jumlah }}" required>
-                        </div>
-                        <div style="margin-right: 15px">
-                            <label for="satuan">Satuan <span style="color: red">*</span></label>
-                            <input type="text" name="satuan[{{ $i }}]" id="satuan"
-                                class="form-control mb-2" value="{{ $barang->stok_barang->satuan }}" required>
                         </div>
                     </div>
                     @php

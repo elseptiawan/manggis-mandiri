@@ -6,6 +6,11 @@
 </head>
 <body>
 	<style type="text/css">
+
+		table{
+			width: 100%;
+			border-collapse: collapse;
+		}
         table.table-bordered > thead > tr > th{
             border:1px solid black;
         }

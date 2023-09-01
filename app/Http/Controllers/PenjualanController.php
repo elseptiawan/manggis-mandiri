@@ -140,17 +140,17 @@ class PenjualanController extends Controller
         }
         return view('Page.Penjualan.edit')->with([
             'data' => $pelanggan,
-            'penjualan' => $penjualan
+            'penjualan' => $penjualan,
+            'stok_barang' => StokBarang::all()
         ]);
     }
 
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(), [
             'pelanggan_id' => 'required',
-            'nama_barang' => 'required',
+            'id_barang' => 'required',
             'harga_jual' => 'required',
             'jumlah' => 'required',
-            'satuan' => 'required',
             'setoran' => 'required',
             'tanggal' => 'required',
             'nota' => 'nullable'
@@ -165,7 +165,7 @@ class PenjualanController extends Controller
             $penjualan = Penjualan::where('id', $id)->first();
             $piutang = Piutang::where('nota', $penjualan->nota)->first();
             $split_id_barang = explode(';', $penjualan->barang_keluar_id);
-            $split_nama_barang = explode(',', $request->nama_barang);
+            $split_id_stok_barang = explode(',', $request->id_barang);
             $split_harga_jual = explode(',', $request->harga_jual);
             $split_jumlah = explode(',', $request->jumlah);
             $split_satuan = explode(',', $request->satuan);
@@ -174,15 +174,19 @@ class PenjualanController extends Controller
                 $barang = Barang::where('id', $split_id_barang[$i])->first();
                 $stok = StokBarang::where('id', $barang->id_barang)->first();
                 $stok->update([
-                    'stok' => $stok->stok + $barang->jumlah - $split_jumlah[$i]
+                    'stok' => $stok->stok + $barang->jumlah
                 ]);
                 $barang->update([
-                    'nama_barang' => $split_nama_barang[$i],
+                    'id_barang' => $split_id_stok_barang[$i],
                     'harga_jual' => $split_harga_jual[$i],
                     'jumlah' => $split_jumlah[$i],
                     'satuan' => $split_satuan[$i],
                     'status' => 'Barang Keluar',
                     'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
+                ]);
+                $new_stok = StokBarang::where('id', $barang->id_barang)->first();
+                $new_stok->update([
+                    'stok' => $new_stok->stok - $split_jumlah[$i]
                 ]);
                 $harga_total += ($split_harga_jual[$i] * $split_jumlah[$i]);
             }

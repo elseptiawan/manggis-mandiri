@@ -137,19 +137,17 @@
 
         // untuk proses update data
         function update(id) {
-            var nama_barang = [];
+            var id_barang = [];
             var harga_jual = [];
             var jumlah = [];
-            var satuan = [];
             var i = 1;
             for (let i=0;i<100;i++){
-                if(! $(`input[name="nama_barang[${i}]"]`).length){
+                if(! $(`select[name="id_barang[${i}]"]`).length){
                     break;
                 }
-                nama_barang.push($(`input[name="nama_barang[${i}]"]`).val());
+                id_barang.push($(`select[name="id_barang[${i}]"]`).val());
                 harga_jual.push($(`input[name="harga_jual[${i}]"]`).val());
                 jumlah.push($(`input[name="jumlah[${i}]"]`).val());
-                satuan.push($(`input[name="satuan[${i}]"]`).val());
             }
             var pelanggan_id = $("#pelanggan_id").val();
             var setoran = $("#setoran").val();
@@ -159,10 +157,9 @@
 
             fd.append('_token',$("#csrf").val());
             fd.append('pelanggan_id', pelanggan_id);
-            fd.append('nama_barang', nama_barang);
+            fd.append('id_barang', id_barang);
             fd.append('harga_jual', harga_jual);
             fd.append('jumlah', jumlah);
-            fd.append('satuan', satuan);
             fd.append('setoran', setoran);
             fd.append('tanggal', tanggal);
             $.ajax({
