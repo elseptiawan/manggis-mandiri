@@ -16,17 +16,18 @@
                     <div style="margin-right: 15px" class="w-25">
                         <label for="nama_barang">Nama Barang <span style="color: red">*</span></label>
                         <select name="id_barang[0]" class="form control form-select form-select-sm mb-2 p-2"
-                            aria-label=".form-select-sm example">
+                            aria-label=".form-select-sm example" onchange="document.getElementById('stok[0]').style.display = 'inline-block';">
                             <option selected disabled hidden>Pilih Barang</option>
                             @foreach ($barang as $item)
-                                <option style="padding: 50px;" value={{ $item->id }}>{{ $item->nama_barang }}
+                                <option style="padding: 50px;" value={{ $item->id }}>{{ $item->nama_barang }} <span class="text-muted">(stok: {{ $item->stok }})</span>
                                 </option>
                             @endforeach
                         </select>
                     </div>
                     <div style="margin-right: 15px" class="w-25">
                         <label for="harga_jual">Harga Jual <span style="color: red">*</span></label>
-                        <input type="number" name="harga_jual[0]" id="harga_jual" class="form-control mb-2 p-2" required>
+                        <input type="number" name="harga_jual[0]" id="harga_jual" class="form-control mb-2 p-2"
+                            required>
                     </div>
                     <div style="margin-right: 15px" class="w-25">
                         <label for="jumlah">Jumlah <span style="color: red">*</span></label>
