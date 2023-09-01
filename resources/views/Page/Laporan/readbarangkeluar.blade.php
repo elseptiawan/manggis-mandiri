@@ -19,11 +19,11 @@
             @foreach($data as $item)
             <tr>
                 <th scope="row">{{ $no++ }}</th>
-                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
-                <td>{{ $item->nama_barang }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
+                <td>{{ $item->stok_barang->nama_barang }}</td>
                 <td>Rp. {{ $item->harga_jual ? $item->harga_jual : "-" }}</td>
                 <td>{{ $item->jumlah }}</td>
-                <td>{{ $item->satuan }}</td>
+                <td>{{ $item->stok_barang->satuan }}</td>
             </tr>
             @endforeach
           </tbody>

@@ -8,6 +8,7 @@
               <th scope="col">Harga Beli</th>
               <th scope="col">Jumlah</th>
               <th scope="col">Satuan</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           
@@ -21,9 +22,12 @@
                 <th scope="row">{{ $no++ }}</th>
                 <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
                 <td>{{ $item->stok_barang->nama_barang }}</td>
-                <td>Rp. {{ $item->harga_beli ? $item->harga_beli : "-" }}</td>
+                <td>{{ $item->harga_beli ? $item->harga_beli : "-" }}</td>
                 <td>{{ $item->jumlah }}</td>
                 <td>{{ $item->stok_barang->satuan }}</td>
+                <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();editbarangmasuk({{ $item->id }})"></i>
+                    <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
+                </td>
             </tr>
             @endforeach
           </tbody>

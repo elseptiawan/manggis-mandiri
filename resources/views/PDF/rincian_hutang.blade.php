@@ -39,7 +39,7 @@
 			@foreach($piutang as $item)
 			<tr>
 				<td>{{$i++}}</td>
-				<td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
+				<td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
 				<td>Rp. {{$item->hutang}}</td>
 				<td>Rp. {{$item->setoran}}</td>
 			</tr>

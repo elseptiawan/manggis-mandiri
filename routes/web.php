@@ -20,11 +20,15 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/dashboard', [BarangController::class, "index"])->name('dashboard')->middleware(['auth', 'role:administrasi,pemiliktoko,pelayantoko,gudang']);
 
 Route::group(['prefix' => '/barang','middleware' => ['auth', 'role:administrasi,pemiliktoko,pelayantoko,gudang']], function() {
-    Route::get('/read',[BarangController::class, "read"]);
+    Route::get('/read-barang-masuk',[BarangController::class, "readbarangmasuk"]);
+    Route::get('/read-barang-keluar',[BarangController::class, "readbarangkeluar"]);
+    Route::get('/read-stok-barang',[BarangController::class, "readstokbarang"]);
     Route::get('/create',[BarangController::class, "create"]);
     Route::post('/store',[BarangController::class, "store"]);
-    Route::get('/edit/{id}',[BarangController::class, "edit"]);
-    Route::put('/update/{id}',[BarangController::class, "update"]);
+    Route::get('/edit-barang-masuk/{id}',[BarangController::class, "editbarangmasuk"]);
+    Route::get('/edit-stok-barang/{id}',[BarangController::class, "editstokbarang"]);
+    Route::put('/update-barang-masuk/{id}',[BarangController::class, "updateBarangMasuk"]);
+    Route::put('/update-stok-barang/{id}',[BarangController::class, "updateStokBarang"]);
     Route::delete('/destroy/{id}',[BarangController::class, "destroy"]);
 });
 

@@ -27,7 +27,7 @@
                 <td style="vertical-align: top">{{ $item->pelanggan->nama_pelanggan }}</td>
                 <td style="vertical-align: top">
                   @foreach($item->barang as $barang)
-                  <p>{{ $barang->nama_barang }}</p>
+                  <p>{{ $barang->stok_barang->nama_barang }}</p>
                   @endforeach
                 </td>
                 <td style="vertical-align: top">
@@ -37,7 +37,7 @@
                 </td>
                 <td style="vertical-align: top">
                   @foreach($item->barang as $barang)
-                  <p>{{ $barang->jumlah }} {{ $barang->satuan }}</p>
+                  <p>{{ $barang->jumlah }} {{ $barang->stok_barang->satuan }}</p>
                   @endforeach
                 </td>
                 <td style="vertical-align: top">

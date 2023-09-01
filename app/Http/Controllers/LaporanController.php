@@ -39,7 +39,7 @@ class LaporanController extends Controller
 
     public function readbarangmasuk()
     {
-        $data = Barang::where('status', 'Barang Masuk')->get();
+        $data = Barang::where('status', 'Barang Masuk')->with('stok_barang')->get();
         return view('Page.Laporan.readbarangmasuk')->with([
             'data' => $data
         ]);
@@ -47,7 +47,7 @@ class LaporanController extends Controller
 
     public function readbarangkeluar()
     {
-        $data = Barang::where('status', 'Barang Keluar')->get();
+        $data = Barang::where('status', 'Barang Keluar')->with('stok_barang')->get();
         return view('Page.Laporan.readbarangkeluar')->with([
             'data' => $data
         ]);

@@ -108,8 +108,8 @@
 			{{-- @php $i=1 @endphp --}}
 			@foreach($penjualan->barang as $barang)
 			<tr>
-				<td>{{$barang->jumlah}} {{ $barang->satuan }}</td>
-				<td>{{$barang->nama_barang}}</td>
+				<td>{{$barang->jumlah}} {{ $barang->stok_barang->satuan }}</td>
+				<td>{{$barang->stok_barang->nama_barang}}</td>
 				<td>Rp. {{$barang->harga_jual}}</td>
 				<td>Rp. {{$barang->harga_jual * $barang->jumlah}}</td>
 			</tr>

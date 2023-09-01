@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use App\Models\{Penjualan, Barang, Pelanggan, Piutang};
+use App\Models\{Penjualan, Barang, Pelanggan, Piutang, StokBarang};
 use PDF;
 
 class PenjualanController extends Controller
 {
     public function index()
     {
-        return view('Page.Penjualan.index');
+        return view('Page.Penjualan.index')->with([
+            'barang' => StokBarang::where('stok', '>', 0)->get()
+        ]);
     }
 
     public function read()
@@ -25,14 +27,19 @@ class PenjualanController extends Controller
         $data = Penjualan::orderBy('tanggal', 'ASC')->with('pelanggan')->get();
 
         foreach($data as $item){
-            $split_id_barang = explode(';', $item->barang_id);
+            $split_id_barang = explode(';', $item->barang_keluar_id);
             $each_barang = [];
             foreach($split_id_barang as $id_barang){
                 $barang = Barang::where('id', $id_barang)->first();
                 array_push($each_barang, $barang);
             }
             $item->barang = $each_barang;
+            foreach($item->barang as $barang){
+                $stok = StokBarang::where('id', $barang->id_barang)->first();
+                $barang->stok_barang = $stok;
+            }
         }
+
         return view('Page.Penjualan.read')->with([
             'data' => $data
         ]);
@@ -41,18 +48,19 @@ class PenjualanController extends Controller
     public function create()
     {
         $data = Pelanggan::all();
+        $barang = StokBarang::where('stok', '>', 0)->get();
         return view('Page.Penjualan.create')->with([
-            'data' => $data
+            'data' => $data,
+            'barang' => $barang
         ]);
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'pelanggan_id' => 'required',
-            'nama_barang' => 'required',
+            'id_barang' => 'required',
             'harga_jual' => 'required',
             'jumlah' => 'required',
-            'satuan' => 'required',
             'setoran' => 'required',
             'tanggal' => 'required',
         ]);
@@ -63,19 +71,23 @@ class PenjualanController extends Controller
 
         DB::beginTransaction();
         try {
-            $split_nama_barang = explode(',', $request->nama_barang);
+            $split_id_barang = explode(',', $request->id_barang);
             $split_harga_jual = explode(',', $request->harga_jual);
             $split_jumlah = explode(',', $request->jumlah);
             $split_satuan = explode(',', $request->satuan);
             $id_barang_inserted = [];
             $harga_total = 0;
-            for($i=0;$i<count($split_nama_barang);$i++){
+            for($i=0;$i<count($split_id_barang);$i++){
                 $barang = Barang::create([
-                    'nama_barang' => $split_nama_barang[$i],
+                    'id_barang' => $split_id_barang[$i],
                     'harga_jual' => $split_harga_jual[$i],
                     'jumlah' => $split_jumlah[$i],
-                    'satuan' => $split_satuan[$i],
-                    'status' => 'Barang Keluar'
+                    'status' => 'Barang Keluar',
+                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
+                ]);
+                $stok = StokBarang::where('id', $barang->id_barang)->first();
+                $stok->update([
+                    'stok' => $stok->stok - $barang->jumlah
                 ]);
                 array_push($id_barang_inserted, $barang->id);
                 $harga_total += ($split_harga_jual[$i] * $split_jumlah[$i]);
@@ -85,7 +97,7 @@ class PenjualanController extends Controller
 
             $penjualan = Penjualan::create([
                 'pelanggan_id' => $request->pelanggan_id,
-                'barang_id' => implode(';', $id_barang_inserted),
+                'barang_keluar_id' => implode(';', $id_barang_inserted),
                 'nota' => $fileName,
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
                 'setoran' => $request->setoran,
@@ -116,12 +128,16 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::where('id', $id)->first();
         $pelanggan = Pelanggan::all();
         $each_barang = [];
-        $split_id_barang = explode(';', $penjualan->barang_id);
+        $split_id_barang = explode(';', $penjualan->barang_keluar_id);
         foreach($split_id_barang as $id_barang){
             $barang = Barang::where('id', $id_barang)->first();
            array_push($each_barang, $barang); 
         }
         $penjualan->barang = $each_barang;
+        foreach($penjualan->barang as $barang){
+            $stok = StokBarang::where('id', $barang->id_barang)->first();
+            $barang->stok_barang = $stok;
+        }
         return view('Page.Penjualan.edit')->with([
             'data' => $pelanggan,
             'penjualan' => $penjualan
@@ -148,7 +164,7 @@ class PenjualanController extends Controller
         try {
             $penjualan = Penjualan::where('id', $id)->first();
             $piutang = Piutang::where('nota', $penjualan->nota)->first();
-            $split_id_barang = explode(';', $penjualan->barang_id);
+            $split_id_barang = explode(';', $penjualan->barang_keluar_id);
             $split_nama_barang = explode(',', $request->nama_barang);
             $split_harga_jual = explode(',', $request->harga_jual);
             $split_jumlah = explode(',', $request->jumlah);
@@ -156,12 +172,17 @@ class PenjualanController extends Controller
             $harga_total = 0;
             for($i=0;$i<count($split_id_barang);$i++){
                 $barang = Barang::where('id', $split_id_barang[$i])->first();
+                $stok = StokBarang::where('id', $barang->id_barang)->first();
+                $stok->update([
+                    'stok' => $stok->stok + $barang->jumlah - $split_jumlah[$i]
+                ]);
                 $barang->update([
                     'nama_barang' => $split_nama_barang[$i],
                     'harga_jual' => $split_harga_jual[$i],
                     'jumlah' => $split_jumlah[$i],
                     'satuan' => $split_satuan[$i],
-                    'status' => 'Barang Keluar'
+                    'status' => 'Barang Keluar',
+                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal),
                 ]);
                 $harga_total += ($split_harga_jual[$i] * $split_jumlah[$i]);
             }
@@ -198,9 +219,16 @@ class PenjualanController extends Controller
         DB::beginTransaction();
         try {
             $penjualan = Penjualan::findOrFail($id);
-            $barang = Barang::where('id', $penjualan->barang_id)->first();
+            $split_barang_keluar_id = explode(';', $penjualan->barang_keluar_id);
+            foreach($split_barang_keluar_id as $barang_keluar_id){
+                $barang_keluar = Barang::where('id', $barang_keluar_id)->first();
+                $stok_barang = StokBarang::where('id', $barang_keluar->id_barang)->first();
+                $stok_barang->update([
+                    'stok' => $stok_barang->stok + $barang_keluar->jumlah
+                ]);
+                $barang_keluar->delete();
+            }
             $piutang = Piutang::where('nota', $penjualan->nota)->first();
-            $barang->delete();
             if ($piutang){
                 $piutang->delete();
             }
@@ -215,7 +243,7 @@ class PenjualanController extends Controller
 
     public function createPDF($penjualan_id){
         $penjualan = Penjualan::where('id', $penjualan_id)->with('pelanggan')->first();
-        $split_id_barang = explode(';', $penjualan->barang_id);
+        $split_id_barang = explode(';', $penjualan->barang_keluar_id);
         $each_barang = [];
         $harga_total = 0;
         foreach($split_id_barang as $id_barang){
@@ -224,6 +252,10 @@ class PenjualanController extends Controller
             $harga_total += ($barang->harga_jual * $barang->jumlah);
         }
         $penjualan->barang = $each_barang;
+        foreach($penjualan->barang as $barang){
+            $stok = StokBarang::where('id', $barang->id_barang)->first();
+            $barang->stok_barang = $stok;
+        }
         $pdf = PDF::loadview('PDF.nota_penjualan', [
             'penjualan' => $penjualan,
             'harga_total' => $harga_total

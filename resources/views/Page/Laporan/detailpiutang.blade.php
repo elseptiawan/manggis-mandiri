@@ -21,7 +21,7 @@
             @foreach($data as $item)
             <tr>
                 <th scope="row">{{ $no++ }}</th>
-                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
                 <td>Rp. {{ $item->setoran }}</td>
                 <td>Rp. {{ $item->hutang }}</td>
                 <td>{{ $item->keterangan }}</td>

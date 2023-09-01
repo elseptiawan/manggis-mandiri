@@ -21,7 +21,7 @@
                         <div style="margin-right: 15px">
                             <label for="nama_barang">Nama Barang <span style="color: red">*</span></label>
                             <input type="text" name="nama_barang[{{ $i }}]" id="nama_barang"
-                                class="form-control mb-2" value="{{ $barang->nama_barang }}" required>
+                                class="form-control mb-2" value="{{ $barang->stok_barang->nama_barang }}" required>
                         </div>
                         <div style="margin-right: 15px">
                             <label for="harga_jual">Harga Jual <span style="color: red">*</span></label>
@@ -36,7 +36,7 @@
                         <div style="margin-right: 15px">
                             <label for="satuan">Satuan <span style="color: red">*</span></label>
                             <input type="text" name="satuan[{{ $i }}]" id="satuan"
-                                class="form-control mb-2" value="{{ $barang->satuan }}" required>
+                                class="form-control mb-2" value="{{ $barang->stok_barang->satuan }}" required>
                         </div>
                     </div>
                     @php

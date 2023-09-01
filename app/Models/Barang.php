@@ -11,11 +11,16 @@ class Barang extends Model
 
     protected $table = 'barang';
     protected $fillable = [
-        'nama_barang',
+        'id_barang',
         'harga_beli',
         'harga_jual',
         'jumlah',
-        'satuan',
-        'status'
+        'status',
+        'tanggal',
     ];
+
+    public function stok_barang()
+    {
+        return $this->belongsTo(StokBarang::class, 'id_barang');
+    }
 }
