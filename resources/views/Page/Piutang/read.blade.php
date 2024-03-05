@@ -9,7 +9,9 @@
               <th scope="col">Hutang per Nota</th>
               <th scope="col">Keterangan</th>
               <th scope="col">Nota</th>
+              @if (Auth::user()->role != 'pelanggan')
               <th scope="col"></th>
+              @endif
             </tr>
           </thead>
           
@@ -27,9 +29,11 @@
                 <td>Rp. {{ $item->hutang }}</td>
                 <td>{{ $item->keterangan }}</td>
                 <td><a href={{ asset('storage/'.$item->nota) }} target="_blank"><i class="bi bi-card-image" role="button"></i></a></td>
+                @if (Auth::user()->role != 'pelanggan')
                   <td><i class="bi bi-pencil-square" style="margin-right: 5px; color: green; cursor: pointer" onClick="event.preventDefault();edit({{ $item->id }})"></i>
                     <i class="bi bi-x-square-fill" style="color: #f43737; cursor: pointer" onClick="event.preventDefault();destroy({{ $item->id }})"></i>
                 </td>
+                @endif
             </tr>
             @endforeach
           </tbody>
